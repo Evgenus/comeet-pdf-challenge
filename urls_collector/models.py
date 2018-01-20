@@ -18,6 +18,14 @@ class Document(models.Model):
     def get_urls_count(self):
         return self.urls.count()
 
+    @classmethod
+    def create_from_file(cls, file_object):
+        instance = cls.objects.create(
+            filename=file_object.name
+        )
+
+        return instance
+
 
 class URL(models.Model):
     url = models.CharField(max_length=2000, blank=False)

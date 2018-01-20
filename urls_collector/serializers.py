@@ -9,7 +9,6 @@ from urls_collector.models import Document
 from urls_collector.models import URL
 
 
-
 class DocumentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -24,6 +23,13 @@ class DocumentSerializer(serializers.HyperlinkedModelSerializer):
         lookup_url_kwarg='document_pk'
     )
     urls = serializers.IntegerField(source='get_urls_count', read_only=True)
+
+
+class DocumentCreateSerializer(serializers.Serializer):
+    document = serializers.FileField()
+
+    def create(self, validated_data):
+        return Document.create_from_file(validated_data['document'])
 
 
 class URLSerializer(serializers.HyperlinkedModelSerializer):
