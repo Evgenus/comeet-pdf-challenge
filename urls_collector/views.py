@@ -43,12 +43,6 @@ class DocumentViewSet(mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet):
             queryset, context={'request': request}, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None, url_pk=None):
-        objects = self.queryset.get(pk=pk)
-        serializer = self.serializer_class(
-            objects, context={'request': request}, many=False)
-        return Response(serializer.data)
-
     def create(self, request):
         create_serializer = DocumentCreateSerializer(data=request.data)
         create_serializer.is_valid(raise_exception=True)
@@ -76,10 +70,4 @@ class URLViewSet(viewsets.ReadOnlyModelViewSet):
 
         serializer = self.serializer_class(
             queryset, context={'request': request}, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None, document_pk=None):
-        objects = self.queryset.get(pk=pk)
-        serializer = self.serializer_class(
-            objects, context={'request': request}, many=False)
         return Response(serializer.data)
