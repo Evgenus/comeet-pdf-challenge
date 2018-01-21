@@ -38,12 +38,10 @@ class DocumentWithUrlsFactory(DocumentFactory):
     occurence1 = factory.RelatedFactory(
         OccurenceFactory,
         'document',
-        url__alive=True
     )
     occurence2 = factory.RelatedFactory(
         OccurenceFactory,
         'document',
-        url__alive=True
     )
 
 
@@ -63,6 +61,18 @@ class TestGetters(TestCase):
                 "ref_urls":"http://testserver/documents/1/urls/"
             }
         ]
+        self.assertEqual(response.json(), expected)
+
+    def test_get_document(self):
+        response = self.client.get('/documents/1/')
+        self.assertEqual(response.status_code, 200)
+        expected = {
+            "ref_self":"http://testserver/documents/1/",
+            "id":1,
+            "filename": self.document.filename,
+            "urls":2,
+            "ref_urls":"http://testserver/documents/1/urls/"
+        }
         self.assertEqual(response.json(), expected)
 
     def test_get_urls(self):
@@ -87,19 +97,16 @@ class TestGetters(TestCase):
             }
         ]
         self.assertEqual(response.json(), expected)
- 
 
-class DocumentWithUrlsFactory(DocumentFactory):
-    occurence1 = factory.RelatedFactory(
-        OccurenceFactory,
-        'document',
-        url__alive=True
-    )
-    occurence2 = factory.RelatedFactory(
-        OccurenceFactory,
-        'document',
-        url__alive=True
-    )
- 
-
- 
+    def test_get_url(self):
+        response = self.client.get('/urls/1/')
+        self.assertEqual(response.status_code, 200)
+        expected = {
+            'ref_self': u'http://testserver/urls/1/',
+            'id': 1,
+            'url': self.document.urls.all()[0].url,
+            'alive': False,
+            'documents': 1,
+            'ref_documents': 'http://testserver/urls/1/documents/',
+        }
+        self.assertEqual(response.json(), expected)
