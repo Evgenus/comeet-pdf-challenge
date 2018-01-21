@@ -36,7 +36,9 @@ class URLSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = URL
-        fields = ('ref_self', 'id', 'url', 'documents', 'ref_documents')
+        fields = (
+            'ref_self', 'id', 'url', 'alive', 'documents', 'ref_documents'
+        )
 
     ref_self = serializers.HyperlinkedIdentityField(
         **get_url_kwargs(Meta.model)

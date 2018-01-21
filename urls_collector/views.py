@@ -7,7 +7,7 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import renderers
-from rest_framework import status 
+from rest_framework import status
 from urls_collector.models import Document
 from urls_collector.models import URL
 from urls_collector.serializers import DocumentSerializer
@@ -16,6 +16,9 @@ from urls_collector.serializers import URLSerializer
 
 
 class DocumentRenderer(renderers.BrowsableAPIRenderer):
+    """
+    Special renderer to override documentts creation form
+    """
     def get_context(self, data, accepted_media_type, renderer_context):
         context = super(DocumentRenderer, self).get_context(
             data, accepted_media_type, renderer_context
@@ -23,7 +26,7 @@ class DocumentRenderer(renderers.BrowsableAPIRenderer):
         serializer = DocumentCreateSerializer()
         context['display_edit_forms'] = isinstance(data, list)
         context['post_form'] = self.render_form_for_serializer(serializer)
-        return context 
+        return context
 
 
 class DocumentViewSet(mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet):
@@ -53,7 +56,7 @@ class DocumentViewSet(mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet):
             display_serializer.data,
             status=status.HTTP_201_CREATED,
             headers=headers
-        ) 
+        )
 
 
 class URLViewSet(viewsets.ReadOnlyModelViewSet):
