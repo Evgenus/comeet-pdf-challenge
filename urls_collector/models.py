@@ -3,6 +3,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 import pdfx
+import requests
+from urlparse import urlparse
+
 
 class Document(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -33,6 +36,17 @@ class Document(models.Model):
         return instance
 
 
+def is_url_alive(url):
+    parsed = urlparse(url)
+    if parsed.scheme == '':
+        url = "http://" + url
+    try:
+        response = requests.head(url)
+        return 200 <= response.status_code < 300
+    except requests.RequestException:
+        return False
+
+
 class URL(models.Model):
     url = models.CharField(
         max_length=2000,
@@ -40,6 +54,7 @@ class URL(models.Model):
         db_index=True,
         blank=False
     )
+    alive = models.BooleanField(blank=False, default=None)
     documents = models.ManyToManyField(
         'Document',
         through='Occurence',
@@ -48,6 +63,11 @@ class URL(models.Model):
 
     def get_documents_count(self):
         return self.documents.count()
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.alive = is_url_alive(self.url)
+        super(URL, self).save(*args, **kwargs)
 
 
 class Occurence(models.Model):
