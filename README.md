@@ -1,3 +1,8 @@
+# Home Assignment on PDF Crawler
+
+I assume that uploaded files are rather small and internet is fast, otherwise
+tasks of checking urls alive and parsing pdf documents should be handles by
+stanalone workers processing some queues and don't deffer response.
 
 ## What it is made of?
 
@@ -20,4 +25,11 @@ https://github.com/encode/rest-framework-tutorial
 
 
 ### drf-nested-routers
+
 https://github.com/alanjds/drf-nested-routers
+
+
+### requests
+
+http://docs.python-requests.org/
+
