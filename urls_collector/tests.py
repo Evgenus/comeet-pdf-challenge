@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 import factory
+import requests
+from io import BytesIO
 
 from django.test import TestCase
 from django.test.client import RequestFactory
@@ -128,3 +130,25 @@ class TestGettersOneDocument(TestCase):
             'ref_documents': 'http://testserver/urls/1/documents/',
         }
         self.assertEqual(response.json(), expected)
+
+
+class TestCreatingDocument(TestCase):
+    DOCUMENT_SOURCE_URL = (
+        "http://www.nottingham.ac.uk/studentservices/"
+        "documents/whatarebibliographiesandreferences.pdf"
+    )
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestCreatingDocument, cls).setUpClass()
+        response = requests.get(cls.DOCUMENT_SOURCE_URL)
+        cls.document_content = response.content
+
+    def test_create(self):
+        response = self.client.post('/documents/', {
+            'document': BytesIO(self.document_content)
+        })
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(models.Document.objects.count(), 1)
+        document = models.Document.objects.first()
+        self.assertEqual(document.urls.count(), 11)
