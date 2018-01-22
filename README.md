@@ -1,5 +1,7 @@
 # Home Assignment on PDF Crawler
 
+[![Heroku](https://heroku-badge.herokuapp.com/?app=comeet-challenge-pdf-crawler)](https://comeet-challenge-pdf-crawler.herokuapp.com)
+
 I assume that uploaded files are rather small and internet is fast, otherwise
 tasks of checking urls alive and parsing pdf documents should be handled by
 standalone workers processing some queues and don't deffer response.
@@ -34,4 +36,8 @@ https://github.com/alanjds/drf-nested-routers
 ### requests
 
 http://docs.python-requests.org/
+
+### factory-boy
+
+https://github.com/FactoryBoy/factory_boy
 
