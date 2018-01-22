@@ -65,7 +65,7 @@ class URL(models.Model):
         return self.documents.count()
 
     def save(self, *args, **kwargs):
-        if not self.pk:
+        if not self.pk and self.alive is None:
             self.alive = is_url_alive(self.url)
         super(URL, self).save(*args, **kwargs)
 

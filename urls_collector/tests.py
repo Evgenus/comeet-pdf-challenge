@@ -38,14 +38,24 @@ class DocumentWithUrlsFactory(DocumentFactory):
     occurence1 = factory.RelatedFactory(
         OccurenceFactory,
         'document',
+        url__url="http://google.com",
+        url__alive=True,
     )
     occurence2 = factory.RelatedFactory(
         OccurenceFactory,
         'document',
+        url__url="http://msn.com",
+        url__alive=True,
+    )
+    occurence3 = factory.RelatedFactory(
+        OccurenceFactory,
+        'document',
+        url__url="http://some-malformed-urls.duh",
+        url__alive=False,
     )
 
 
-class TestGetters(TestCase):
+class TestGettersOneDocument(TestCase):
     def setUp(self):
         self.document = DocumentWithUrlsFactory()
 
@@ -57,7 +67,7 @@ class TestGetters(TestCase):
                 "ref_self":"http://testserver/documents/1/",
                 "id":1,
                 "filename": self.document.filename,
-                "urls":2,
+                "urls":3,
                 "ref_urls":"http://testserver/documents/1/urls/"
             }
         ]
@@ -70,7 +80,7 @@ class TestGetters(TestCase):
             "ref_self":"http://testserver/documents/1/",
             "id":1,
             "filename": self.document.filename,
-            "urls":2,
+            "urls":3,
             "ref_urls":"http://testserver/documents/1/urls/"
         }
         self.assertEqual(response.json(), expected)
@@ -82,18 +92,26 @@ class TestGetters(TestCase):
             {
                 'ref_self': u'http://testserver/urls/1/',
                 'id': 1,
-                'url': self.document.urls.all()[0].url,
-                'alive': False,
+                'url': "http://google.com",
+                'alive': True,
                 'documents': 1,
                 'ref_documents': 'http://testserver/urls/1/documents/',
             },
             {
                 'ref_self': u'http://testserver/urls/2/',
                 'id': 2,
-                'url': self.document.urls.all()[1].url,
-                'alive': False,
+                'url': "http://msn.com",
+                'alive': True,
                 'documents': 1,
                 'ref_documents': 'http://testserver/urls/2/documents/',
+            },
+            {
+                'ref_self': u'http://testserver/urls/3/',
+                'id': 3,
+                'url': "http://some-malformed-urls.duh",
+                'alive': False,
+                'documents': 1,
+                'ref_documents': 'http://testserver/urls/3/documents/',
             }
         ]
         self.assertEqual(response.json(), expected)
@@ -104,8 +122,8 @@ class TestGetters(TestCase):
         expected = {
             'ref_self': u'http://testserver/urls/1/',
             'id': 1,
-            'url': self.document.urls.all()[0].url,
-            'alive': False,
+            'url': "http://google.com",
+            'alive': True,
             'documents': 1,
             'ref_documents': 'http://testserver/urls/1/documents/',
         }
