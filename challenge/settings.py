@@ -25,7 +25,9 @@ SECRET_KEY = 'ouobxla4m_v3dh1^03yq=9p_a5b)+7e!f0mkv-0*fg+c=(8_u2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    u'comeet-challenge-pdf-crawler.herokuapp.com',
+]
 
 
 # Application definition
