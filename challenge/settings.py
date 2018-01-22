@@ -27,7 +27,9 @@ SECRET_KEY = 'ouobxla4m_v3dh1^03yq=9p_a5b)+7e!f0mkv-0*fg+c=(8_u2'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    u'comeet-challenge-pdf-crawler.herokuapp.com',
+    '127.0.0.1',
+    'localhost',
+    'comeet-challenge-pdf-crawler.herokuapp.com',
 ]
 
 
@@ -129,4 +131,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
